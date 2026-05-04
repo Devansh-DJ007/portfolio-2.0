@@ -2,17 +2,27 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 type ThemeCtx = { isDark: boolean; toggleTheme: () => void };
-const ThemeContext = createContext<ThemeCtx>({ isDark: false, toggleTheme: () => {} });
+const ThemeContext = createContext<ThemeCtx>({
+  isDark: true,
+  toggleTheme: () => {},
+});
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true); // default dark
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const dark = localStorage.getItem("theme") === "dark";
-    setIsDark(dark);
-    document.documentElement.classList.toggle("dark", dark);
+
+    const storedTheme = localStorage.getItem("theme");
+
+    if (storedTheme === "light") {
+      setIsDark(false);
+      document.documentElement.classList.remove("dark");
+    } else {
+      setIsDark(true);
+      document.documentElement.classList.add("dark");
+    }
   }, []);
 
   const toggleTheme = () => {
@@ -22,8 +32,19 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("theme", next ? "dark" : "light");
   };
 
-  if (!mounted) return <ThemeContext.Provider value={{ isDark: false, toggleTheme }}>{children}</ThemeContext.Provider>;
-  return <ThemeContext.Provider value={{ isDark, toggleTheme }}>{children}</ThemeContext.Provider>;
+  if (!mounted) {
+    return (
+      <ThemeContext.Provider value={{ isDark: true, toggleTheme }}>
+        {children}
+      </ThemeContext.Provider>
+    );
+  }
+
+  return (
+    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
 export const useTheme = () => useContext(ThemeContext);
