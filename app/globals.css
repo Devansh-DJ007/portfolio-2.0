@@ -1,0 +1,110 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap');
+
+/* ── Design tokens ─────────────────────────────────── */
+:root {
+  --bg:           #F9F8F5;
+  --bg-warm:      #F4F2ED;
+  --surface:      #FFFFFF;
+  --surface-2:    #F0EDE6;
+  --border:       #E8E4DC;
+  --border-light: #F0EDE6;
+  --text-1:       #0F0E0C;
+  --text-2:       #5C5850;
+  --text-3:       #A09A90;
+  --accent:       #1A3A6B;
+  --accent-warm:  #C9A96E;
+  --accent-bg:    #EEF2FA;
+}
+
+.dark {
+  --bg:           #0C0B09;
+  --bg-warm:      #111009;
+  --surface:      #161410;
+  --surface-2:    #1E1C17;
+  --border:       #2A2820;
+  --border-light: #1E1C17;
+  --text-1:       #F0EDE6;
+  --text-2:       #8A8278;
+  --text-3:       #4A4840;
+  --accent:       #6B9ADE;
+  --accent-warm:  #C9A96E;
+  --accent-bg:    #0F1825;
+}
+
+/* ── Base ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+/* ── Noise texture ─────────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.6;
+}
+
+/* ── Typography ────────────────────────────────────── */
+.font-serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+
+/* ── Layout ────────────────────────────────────────── */
+.container-tight {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+.container-wide {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* ── Section label ─────────────────────────────────── */
+.section-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+/* ── Hairline divider ──────────────────────────────── */
+.hairline {
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+/* ── Scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+/* ── Selection ─────────────────────────────────────── */
+::selection { background: var(--accent-bg); color: var(--accent); }
+
+/* ── Animate in ────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+.animate-blink { animation: blink 1s step-end infinite; }
